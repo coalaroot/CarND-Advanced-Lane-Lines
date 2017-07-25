@@ -1,3 +1,4 @@
+import pickle
 from moviepy.editor import VideoFileClip
 from Lane import Line
 from find_lanes import *
@@ -53,8 +54,6 @@ def process_image(img):
     cv2.putText(result, str1, (430, 630), font, 1, (0, 0, 255), 2, cv2.LINE_AA)
     cv2.putText(result, str2, (230, 670), font, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
-    # plt.imshow(result)
-    # plt.show()
     return result
 
 

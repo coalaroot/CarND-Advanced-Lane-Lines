@@ -1,7 +1,7 @@
 import pickle
+
 import cv2
 import numpy as np
-
 
 def abs_sobel_thresh(img, orient='x', thresh_min=0, thresh_max=255):
     gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
@@ -45,9 +45,6 @@ def warp_image(img):
 
     img = cv2.undistort(img, mtx, dist, None, mtx)
 
-    # write_name = './test_images/undistorted'+str(idx)+'.jpg'
-    # cv2.imwrite(write_name, img)
-
     detect_lines = np.zeros_like(img[:, :, 0])
     gradx = abs_sobel_thresh(img, orient='x', thresh_min=20)
     grady = abs_sobel_thresh(img, orient='y', thresh_min=25)
@@ -55,9 +52,6 @@ def warp_image(img):
 
     # Using color selecting and sobel to extrapolate lanes
     detect_lines[(gradx == 1) & (grady == 1) | (color == 1)] = 255
-
-    # write_name = './test_images/line_detected'+str(idx)+'.jpg'
-    # cv2.imwrite(write_name, detect_lines)
 
     w = img.shape[1]
     h = img.shape[0]
@@ -67,17 +61,8 @@ def warp_image(img):
 
     M = cv2.getPerspectiveTransform(src, dst)
     Minv = cv2.getPerspectiveTransform(dst, src)
+
     # Changing perspective to effectively look for lane lines
     binary_warped = cv2.warpPerspective(detect_lines, M, (w, h), flags=cv2.INTER_LINEAR)
-    # write_name = './test_images/warped'+str(idx)+'.jpg'
-    # cv2.imwrite(write_name, binary_warped)
+
     return binary_warped, M, Minv
-
-
-dist_pickle = pickle.load(open('./calibration_pickle.p', 'rb'))
-mtx = dist_pickle['mtx']
-dist = dist_pickle['dist']
-img = cv2.imread('camera_cal/calibration1.jpg')
-
-img = cv2.undistort(img, mtx, dist, None, mtx)
-cv2.imwrite('output_images/calibrated_camera1.jpg', img)

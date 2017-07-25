@@ -77,6 +77,7 @@ def find_lanes_from_scratch(binary_warped, left=False, right=False):
 
     out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 0]
     out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
+    cv2.imwrite('./output_images/line_lanes.jpg', out_img)
     # plt.imshow(out_img)
     # plt.plot(left_fitx, ploty, color='yellow')
     # plt.plot(right_fitx, ploty, color='yellow')
