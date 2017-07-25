@@ -33,11 +33,11 @@ I then used the output `objpoints` and `imgpoints` to compute the camera calibra
 
 
 Before:
-<img src="./camera_cal/calibration1.jpg" width="250">
+<img src="./camera_cal/calibration1.jpg" width="450">
 
 
 After:
-<img src="./output_images/calibrated_camera1.jpg" width="250">
+<img src="./output_images/calibrated_camera1.jpg" width="450">
 
 ### Pipeline (single images)
 
@@ -45,11 +45,11 @@ After:
 
 
 Before:
-<img src="./test_images/test1.jpg" width="250">
+<img src="./test_images/test1.jpg" width="450">
 
 
 After:
-<img src="./output_images/undistorted2.jpg" width="250">
+<img src="./output_images/undistorted2.jpg" width="450">
 
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
@@ -60,48 +60,35 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
-
-```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
-```
-
-This resulted in the following source and destination points:
+I performed a perspective transform in lines #56 to #66 in file `transformed_img.py`. My source and destination points are
 
 | Source        | Destination   | 
 |:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| 230, 720      | 320, 720        | 
+| 1100, 720      | 960, 720      |
+| 580, 460     | 320, 0      |
+| 700, 460      | 960, 0        |
 
 I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+This is done in the file `find_lanes.py` in a function called `find_lanes_from_scratch`. First I'm doing a histogram of my
+warped image to get a start (bottom points) of left and right lane. Then I use sliding windows to fit in 2nd degree polynomial. The effects:
 
-![alt text][image5]
+<img src="./output_images/line_lanes.jpg" width="450">
+
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+I did this in lines functions `find_curvature()` and `car_position()` in a file `find_lanes.py`. I used Udacity measurements with meters per pixel in x and y dimensions.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I implemented this step in lines #33 - #55 in file `parse_video.py`. Here are the results
 
-![alt text][image6]
+<img src="./output_images/result.jpg" width="450">
 
 ---
 
@@ -109,7 +96,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./output_video.mp4)
 
 ---
 
@@ -117,4 +104,4 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+Firstly I found the best combination of color and sobel thresholding by trial and error (and some tips from my classmates). Then I focused on finding lines and this is my best place for improvement because my false lane detecting is not too good. I could smoothen the results, make more use out of the Lane class.
