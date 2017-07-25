@@ -1,8 +1,6 @@
-import glob
 import pickle
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def abs_sobel_thresh(img, orient='x', thresh_min=0, thresh_max=255):
@@ -60,6 +58,7 @@ def warp_image(img):
 
     # write_name = './test_images/line_detected'+str(idx)+'.jpg'
     # cv2.imwrite(write_name, detect_lines)
+
     w = img.shape[1]
     h = img.shape[0]
     src = np.float32([[230, 720], [1100, 720], [580, 460], [700, 460]])
@@ -73,6 +72,3 @@ def warp_image(img):
     # write_name = './test_images/warped'+str(idx)+'.jpg'
     # cv2.imwrite(write_name, binary_warped)
     return binary_warped, M, Minv
-
-
-
