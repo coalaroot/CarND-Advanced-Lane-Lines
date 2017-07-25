@@ -72,3 +72,12 @@ def warp_image(img):
     # write_name = './test_images/warped'+str(idx)+'.jpg'
     # cv2.imwrite(write_name, binary_warped)
     return binary_warped, M, Minv
+
+
+dist_pickle = pickle.load(open('./calibration_pickle.p', 'rb'))
+mtx = dist_pickle['mtx']
+dist = dist_pickle['dist']
+img = cv2.imread('camera_cal/calibration1.jpg')
+
+img = cv2.undistort(img, mtx, dist, None, mtx)
+cv2.imwrite('output_images/calibrated_camera1.jpg', img)
